@@ -30,6 +30,15 @@ public class DoorRotation : MonoBehaviour
         }
     }
 
+    public void hide(){
+        Debug.Log("Door shown.");
+        gameObject.SetActive(false);
+    }
+    public void show(){
+        Debug.Log("Door hide.");
+        gameObject.SetActive(true);
+    }
+
     void Update()
     {
         if (player == null)

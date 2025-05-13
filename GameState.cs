@@ -8,9 +8,9 @@ public class GameState : MonoBehaviour
     public int score = 0;
     public bool hasKey = false;
     public string currentCheckpointId = "";
-
+    public DoorRotation door; 
     [Header("Lighting Control")]
-    public int maxScoreForFullRed = 100;
+    public int respawnCount = 0;
     private Light[] sceneLights;
 
     private void Awake()
@@ -29,18 +29,38 @@ public class GameState : MonoBehaviour
     {
         // Find all lights in the scene
         sceneLights = FindObjectsOfType<Light>();
+        door = FindObjectOfType<DoorRotation>();
+    }
+
+    private void CalculateRespawnState(int respawnCount)
+    {
+        switch (respawnCount)
+        {
+            case 0:
+                UpdateLightRedColors(0f);
+                door.show();
+                break;
+            case 1:
+                UpdateLightRedColors(0.5f);
+                door.hide();
+                break;
+            case 2:
+                UpdateLightRedColors(1f);
+                break;
+            default:
+                UpdateLightRedColors(0f);
+                break;
+        }
     }
 
     private void Update()
     {
-        UpdateLightColors();
+        CalculateRespawnState(respawnCount);
     }
 
-    private void UpdateLightColors()
+    private void UpdateLightRedColors(float percentage)
     {
-        float t = Mathf.Clamp01(score / (float)maxScoreForFullRed);
-        Color color = new Color(1f, 1f - t, 1f - t); // redder as score increases
-
+        Color color = new Color(1f, 1f - percentage, 1f - percentage);
         foreach (var light in sceneLights)
         {
             if (light != null)

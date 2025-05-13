@@ -122,7 +122,7 @@ namespace StarterAssets
 			characterController.enabled = false;
 			transform.position = spawnPosition;
 			characterController.enabled = true;
-			GameState.Instance.score += 10;
+			GameState.Instance.respawnCount += 1;
 		}
 
 		private void GroundedCheck()
